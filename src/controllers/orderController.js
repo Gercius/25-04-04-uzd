@@ -2,7 +2,7 @@ import { Order } from "../models/Order.js";
 
 const getAllOrders = async (req, res) => {
     try {
-        const orders = await Order.find();
+        const orders = await Order.find({ userId: req.user.id });
 
         if (!orders.length) {
             return res.status(404).json({
