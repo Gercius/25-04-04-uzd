@@ -6,8 +6,6 @@ const signToken = (userId) => {
 };
 
 const signup = async (req, res) => {
-    console.log("signup");
-
     try {
         const newUser = await User.create({
             username: req.body.username,
@@ -37,16 +35,12 @@ const signin = async (req, res) => {
         if (!username || !password) throw new Error("Please provide username and passowrd");
 
         const user = await User.findOne({ username }).select("+password");
-        console.log("password", password);
-        console.log("user.password", user.password);
-        console.log("password === user.password", password === user.password);
 
         if (!user || !(await user.correctPassword(password, user.password))) {
             throw new Error("Incorrect username or password");
         }
 
         const token = signToken(user._id);
-        console.log(token);
 
         res.status(201).json({
             data: {
